@@ -173,7 +173,7 @@ sub update_file_headers {
 
 	 my $cmd = "dcmodify ";
 	 foreach my $set (@$setRef) {
-		  $cmd .= " --insert-tag '".$set->[0]."=".$set->[1]."' ";
+		  $cmd .= " -i '".$set->[0]."=".$set->[1]."' ";
 	 }
 	 $cmd .= "'${file}' 2>&1";
 	 
