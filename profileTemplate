@@ -94,7 +94,6 @@ sub getSubjectIDs {
     my $phantomVisit;
 
     ($subjectID{'PSCID'}, $subjectID{'CandID'}, $subjectID{'visitLabel'}) = split(/_/, $patientName);
-    #$subjectID{'PSCID'}
     $subjectID{'subprojectID'} = 1;
 
     return \%subjectID;
