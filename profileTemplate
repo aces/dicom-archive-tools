@@ -89,32 +89,14 @@ sub getIncomingDir {
 # assumes identifers are stored as <PSCID>_<DCCID>_<visit> in PatientName field, where <visit> is 3 digits.
 sub getSubjectIDs {
     my ($patientName, $patientID, $scannerID, $dbhr) = @_;
+    my %subjectID;
+    # create a phantom specific visit label
+    my $phantomVisit;
 
-    my %subjectID; # Will stored subject IDs.
-    
-     # If patientName is phantom scan or test scan
-     # CandID is scanner DCCID (based on site alias)
-     # visitLabel is scan patient name
-    if ($patientName =~ /PHA/i or $patientName =~ /TEST/i) {
+    ($subjectID{'PSCID'}, $subjectID{'CandID'}, $subjectID{'visitLabel'}) = split(/_/, $patientName);
+    #$subjectID{'PSCID'}
+    $subjectID{'subprojectID'} = 1;
 
-        $subjectID{'CandID'}    = NeuroDB::MRI::my_trim(NeuroDB::MRI::getScannerCandID($scannerID, $dbhr));
-        $subjectID{'visitLabel'}= NeuroDB::MRI::my_trim($patientName);
-
-     # If patient match PSCID_DCCID_VisitLabel
-     # Determine PSCID, DCCID and visitLabel based on patient name
-    } elsif ($patientName =~ /([^_]+)_(\d+)_([^_]+)/) {
-
-        $subjectID{'PSCID'}         = NeuroDB::MRI::my_trim($1);
-        $subjectID{'CandID'}        = NeuroDB::MRI::my_trim($2);
-        $subjectID{'visitLabel'}    = NeuroDB::MRI::my_trim($3);
-
-        print "PSCID is: "            . $subjectID{'PSCID'}      . 
-                "\n CandID id: "      . $subjectID{'CandID'}     . 
-                "\n visit_label is: " . $subjectID{'visitLabel'} . "\n";
-
-    }
-   
-    # Return subjectIDs
     return \%subjectID;
 }
 
